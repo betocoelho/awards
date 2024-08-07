@@ -23,7 +23,7 @@ public class LookForWinnerRangeService implements LookForWinnerRangeUseCase {
 				entityManager.createNativeQuery(VIEW + """
 						SELECT *
 						  FROM win_view
-						 LIMIT 2
+						 LIMIT 1
 						""")
 						.unwrap(Query.class)
 
@@ -33,10 +33,8 @@ public class LookForWinnerRangeService implements LookForWinnerRangeUseCase {
 				entityManager.createNativeQuery(VIEW + """
 							SELECT d.*
 							  FROM win_view d
-							 WHERE (d.producer, d.diff) IN (
-								SELECT d1.producer, max(d1.diff) diff
-								  FROM win_view d1
-								 GROUP BY d1.producer)
+							 ORDER BY diff DESC
+						 	 LIMIT 1
 						""")
 						.unwrap(Query.class)
 
